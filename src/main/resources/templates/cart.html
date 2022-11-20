@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<#include "header/_head.html">
+<body style="margin-left: 40px">
+
+<h1>Product in cart:</h1>
+
+<div style="width: 1000px">
+    <div style="margin-bottom: 5px">
+        <div style="margin-bottom: 20px">
+            <div style="margin-bottom: 20px" class="btn-group" role="group" aria-label="Basic example">
+                <div style="margin-right: 20px">
+                    <form action="/logout" method="post">
+                        <div>
+                            <button type="submit" class="btn btn-danger" style="width: 80px">
+                                Logout
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <a type="button" href="/products" class="btn btn-success" style="width: 80px">Back</a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1>
+                Total price: ${totalPrice}
+            </h1>
+        </div>
+        <table class="table table-striped">
+            <tr>
+                <th>NAME</th>
+                <th>AMOUNT</th>
+                <th>TOTAL PRICE</th>
+                <th>ACTION</th>
+            </tr>
+            <#foreach order in orders>
+            <tr>
+                <td>${order.product.name}</td>
+                <td>${order.quantity}</td>
+                <td>${order.total}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <div style="margin-right: 20px">
+                            <form action="/products/cart/update/plus" method="post">
+                                <input type="hidden" name="id" value="${order.product.id}">
+                                <button type="submit" class="btn btn" style="width: 38px">+</button>
+                            </form>
+                        </div>
+                        <div style="margin-right: 20px">
+                            <form action="/products/cart/update/minus" method="post">
+                                <input type="hidden" name="id" value="${order.product.id}">
+                                <button type="submit" class="btn btn" style="width: 38px">-</button>
+                            </form>
+                        </div>
+                        <div style="margin-right: 20px">
+                            <form action="/products/cart/delete" method="post">
+                                <input type="hidden" name="id" value="${order.product.id}">
+                                <button type="submit" class="btn btn-danger" style="width: 80px">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </#foreach>
+        </table>
+    </div>
+</body>
+</html>
