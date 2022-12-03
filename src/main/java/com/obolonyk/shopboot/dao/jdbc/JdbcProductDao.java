@@ -30,7 +30,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     @Override
-    public Product getById(int id) {
+    public Product getById(Long id) {
         return jdbcTemplate.queryForObject(SELECT_BY_ID, rowMapper, id);
     }
 

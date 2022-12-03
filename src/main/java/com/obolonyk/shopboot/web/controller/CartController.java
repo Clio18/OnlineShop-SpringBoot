@@ -1,10 +1,8 @@
 package com.obolonyk.shopboot.web.controller;
 
 import com.obolonyk.shopboot.entity.Order;
-import com.obolonyk.shopboot.entity.Product;
 
 import com.obolonyk.shopboot.service.CartService;
-import com.obolonyk.shopboot.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,18 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 @SessionAttributes("cart")
 public class CartController {
-    private final ProductService productService;
     private final CartService cartService;
 
     @Autowired
-    public CartController(ProductService productService, CartService cartService) {
-        this.productService = productService;
+    public CartController(CartService cartService) {
         this.cartService = cartService;
     }
 
@@ -35,16 +30,12 @@ public class CartController {
 
     @PostMapping(path = "/product/cart")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String addToCartPost(@RequestParam Integer id,
+    protected String addToCartPost(@RequestParam Long id,
                                    @ModelAttribute("cart") List<Order> cart,
                                    RedirectAttributes attributes) {
 
-        Optional<Product> optionalProduct = productService.getById(id);
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            cartService.addChosenProductToCart(product, cart);
-        }
-        attributes.addFlashAttribute("cart", cart);
+        List<Order> cartUpdated = cartService.addChosenProductToCart(id, cart);
+        attributes.addFlashAttribute("cart", cartUpdated);
         return "redirect:/products";
     }
 

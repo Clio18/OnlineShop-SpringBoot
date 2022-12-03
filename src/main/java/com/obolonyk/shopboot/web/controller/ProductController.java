@@ -64,7 +64,8 @@ public class ProductController {
 
     @GetMapping(path = "/products/update")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String updateProductGet(@RequestParam Integer id, ModelMap model) {
+    protected String updateProductGet(@RequestParam Long id,
+                                      ModelMap model) {
 
         Optional<Product> productOptional = productService.getById(id);
         if (productOptional.isPresent()) {

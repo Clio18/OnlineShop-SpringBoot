@@ -2,12 +2,21 @@ package com.obolonyk.shopboot.service;
 
 import com.obolonyk.shopboot.entity.Order;
 import com.obolonyk.shopboot.entity.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService {
+    private final ProductService productService;
+
+    @Autowired
+    public CartService(ProductService productService) {
+        this.productService = productService;
+    }
+
     public int getTotalProductsCount(List<Order> cart) {
         int count = 0;
         if (cart != null) {
@@ -29,14 +38,17 @@ public class CartService {
         return totalPrice;
     }
 
-    public void addChosenProductToCart(Product product, List<Order> cart) {
+    public List<Order> addChosenProductToCart(Long productId, List<Order> cart) {
+        Optional<Product> optionalProduct = productService.getById(productId);
+        Product product = optionalProduct.orElseThrow(() -> new RuntimeException("Product not found"));
+
         for (Order order : cart) {
             if (order.getProduct().getName().equals(product.getName())) {
                 int quantity = order.getQuantity() + 1;
                 double total = quantity * product.getPrice();
                 order.setQuantity(quantity);
                 order.setTotal(total);
-                return;
+                return cart;
             }
         }
         Order order = Order.builder()
@@ -45,6 +57,7 @@ public class CartService {
                 .total(product.getPrice())
                 .build();
         cart.add(order);
+        return cart;
     }
 
     public void decreasingByOneCart(List<Order> cart, Long id) {

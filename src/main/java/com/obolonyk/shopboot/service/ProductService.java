@@ -19,7 +19,7 @@ public class ProductService {
         return jdbcProductDao.getAll();
     }
 
-    public Optional<Product> getById(int id) {
+    public Optional<Product> getById(Long id) {
         Product product = jdbcProductDao.getById(id);
         if(product==null){
             return Optional.empty();
