@@ -39,7 +39,7 @@ public class ApplicationSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*", "/products/*", "/product/*").permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*", "/products/*", "/product/*", "/registration").permitAll()
                 .antMatchers("/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .anyRequest()
                 .authenticated()

@@ -1,49 +1,41 @@
 package com.obolonyk.shopboot.service;
 
-import com.obolonyk.shopboot.dao.ProductDao;
 import com.obolonyk.shopboot.entity.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.obolonyk.shopboot.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Repository
+@RequiredArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductDao jdbcProductDao;
+    private final ProductRepository repository;
 
     public List<Product> getAll() {
-        return jdbcProductDao.getAll();
+        return repository.findAll();
     }
 
-    public Optional<Product> getById(Long id) {
-        Product product = jdbcProductDao.getById(id);
-        if(product==null){
-            return Optional.empty();
-        }
-        return Optional.of(product);
+    public Product getById(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("Product with id %s not found", id)));
     }
 
     public void save(Product product) {
         LocalDateTime date = LocalDateTime.now();
         product.setCreationDate(date);
-        jdbcProductDao.save(product);
+        repository.save(product);
     }
 
-    public void remove(int id) {
-        jdbcProductDao.remove(id);
+    public void remove(Integer id) {
+        repository.deleteById(id);
     }
 
-    public void update(Product product) {
-        LocalDateTime date = LocalDateTime.now();
-        product.setCreationDate(date);
-        jdbcProductDao.update(product);
-    }
 
-    public List<Product> getBySearch(String pattern) {
-        return jdbcProductDao.getBySearch(pattern);
+    public List<Product> getBySearch(String search) {
+        return repository.findProductByNameOrDescriptionContains(search, search);
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartService {
@@ -38,9 +37,8 @@ public class CartService {
         return totalPrice;
     }
 
-    public List<Order> addChosenProductToCart(Long productId, List<Order> cart) {
-        Optional<Product> optionalProduct = productService.getById(productId);
-        Product product = optionalProduct.orElseThrow(() -> new RuntimeException("Product not found"));
+    public List<Order> addChosenProductToCart(Integer productId, List<Order> cart) {
+        Product product = productService.getById(productId);
 
         for (Order order : cart) {
             if (order.getProduct().getName().equals(product.getName())) {
@@ -60,15 +58,15 @@ public class CartService {
         return cart;
     }
 
-    public void decreasingByOneCart(List<Order> cart, Long id) {
+    public void decreasingByOneCart(List<Order> cart, Integer id) {
         CartAction.REMOVE_FROM_CART.perform(cart, id);
     }
 
-    public void increasingByOneInCart(List<Order> cart, Long id) {
+    public void increasingByOneInCart(List<Order> cart, Integer id) {
         CartAction.ADD_TO_CART.perform(cart, id);
     }
 
-    public void deleteChosenProductFromCart(List<Order> cart, Long id) {
+    public void deleteChosenProductFromCart(List<Order> cart, Integer id) {
         CartAction.DELETE.perform(cart, id);
     }
 }

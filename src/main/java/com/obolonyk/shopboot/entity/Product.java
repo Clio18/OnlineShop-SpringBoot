@@ -1,17 +1,30 @@
 package com.obolonyk.shopboot.entity;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
 @Builder
+@Getter
+@Setter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "products")
 public class Product {
-    private long id;
-    private String name;
-    private double price;
-    private LocalDateTime creationDate;
-    private String description;
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_id_gen")
+    @SequenceGenerator(name = "products_id_gen", sequenceName = "products_id_seq", allocationSize = 1)
+    private Integer id;
 
+    @Column
+    private String name;
+    @Column
+    private double price;
+    @Column
+    private LocalDateTime creationDate;
+    @Column
+    private String description;
 }

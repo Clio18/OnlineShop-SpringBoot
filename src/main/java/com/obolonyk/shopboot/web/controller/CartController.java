@@ -30,7 +30,7 @@ public class CartController {
 
     @PostMapping(path = "/product/cart")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String addToCartPost(@RequestParam Long id,
+    protected String addToCartPost(@RequestParam Integer id,
                                    @ModelAttribute("cart") List<Order> cart,
                                    RedirectAttributes attributes) {
 
@@ -51,7 +51,7 @@ public class CartController {
 
     @PostMapping(path = "/products/cart/delete")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String deleteFromCartPost(@RequestParam Long id,
+    protected String deleteFromCartPost(@RequestParam Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {
 
@@ -62,7 +62,7 @@ public class CartController {
 
     @PostMapping(path = "/products/cart/update/minus")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String updateCartMinusPost(@RequestParam Long id,
+    protected String updateCartMinusPost(@RequestParam Integer id,
                                          @ModelAttribute("cart") List<Order> cart,
                                          RedirectAttributes attributes) {
 
@@ -73,7 +73,7 @@ public class CartController {
 
     @PostMapping(path = "/products/cart/update/plus")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String updateCartPlusPost(@RequestParam Long id,
+    protected String updateCartPlusPost(@RequestParam Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {
 

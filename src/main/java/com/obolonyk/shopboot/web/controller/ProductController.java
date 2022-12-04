@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -64,17 +63,12 @@ public class ProductController {
 
     @GetMapping(path = "/products/update")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String updateProductGet(@RequestParam Long id,
+    protected String updateProductGet(@RequestParam Integer id,
                                       ModelMap model) {
 
-        Optional<Product> productOptional = productService.getById(id);
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            model.addAttribute("product", product);
-            return "updateProduct";
-        } else {
-            throw new RuntimeException("Product not found");
-        }
+        Product product = productService.getById(id);
+        model.addAttribute("product", product);
+        return "updateProduct";
     }
 
     @PostMapping(path = "/products/update")
@@ -90,7 +84,7 @@ public class ProductController {
                 .description(description)
                 .name(name)
                 .build();
-        productService.update(product);
+        productService.save(product);
         return "redirect:/products";
     }
 
