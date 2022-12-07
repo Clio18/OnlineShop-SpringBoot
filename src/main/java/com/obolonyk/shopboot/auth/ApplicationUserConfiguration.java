@@ -24,13 +24,16 @@ public class ApplicationUserConfiguration implements ApplicationUserDao {
         ApplicationUserRole applicationUserRole = ApplicationUserRole.valueOf(user.getRole().name());
         Set<SimpleGrantedAuthority> authorities = applicationUserRole.getGrantedAuthorities();
 
-        //TODO: it is strange!
-        //it works only if login is the same as password, because in this case the result of encryption is the same
-        //the main issue here is that we retrieve encrypted password from db...
-        String password = passwordEncoder.encode(user.getLogin());
+        //TODO: how should it work!
+        //in case of working with spring auth we should retrieve the actual password
+        //but in common cases our password stored in db in encrypted form....
 
-        ApplicationUser applicationUser = new ApplicationUser(user.getLogin(),
-                password,
+        String enteredPassword = user.getPassword();
+        String enteredPasswordEncoded = passwordEncoder.encode(enteredPassword);
+
+        ApplicationUser applicationUser = new ApplicationUser(
+                login,
+                enteredPasswordEncoded,
                 authorities,
                 true,
                 true,

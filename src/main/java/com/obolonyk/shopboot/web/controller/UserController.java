@@ -19,4 +19,9 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @GetMapping("registration")
+    public String getRegistrated() {
+        return "registration";
+    }
+
 }
