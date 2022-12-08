@@ -4,7 +4,7 @@ import com.obolonyk.shopboot.entity.Order;
 import com.obolonyk.shopboot.entity.Product;
 import com.obolonyk.shopboot.service.CartService;
 import com.obolonyk.shopboot.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,20 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
     private final CartService cartService;
 
-    @Autowired
-    public ProductController(ProductService productService, CartService cartService) {
-        this.productService = productService;
-        this.cartService = cartService;
-    }
-
     @GetMapping(path = "/products")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String getProducts(Model model,
+    protected String getAllProducts(Model model,
                                  //ArrayList has a constructor
                                  @ModelAttribute("cart") ArrayList<Order> cart) {
 
@@ -42,13 +37,13 @@ public class ProductController {
 
     @GetMapping(path = "/products/add")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String addProductGet() {
+    protected String addProductView() {
         return "addProduct";
     }
 
     @PostMapping(path = "/products/add")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String addProductPost(@RequestParam String name,
+    protected String addProduct(@RequestParam String name,
                                     @RequestParam String description,
                                     @RequestParam Double price) {
 
@@ -63,7 +58,7 @@ public class ProductController {
 
     @GetMapping(path = "/products/update")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String updateProductGet(@RequestParam Integer id,
+    protected String updateProductView(@RequestParam Integer id,
                                       ModelMap model) {
 
         Product product = productService.getById(id);
@@ -73,7 +68,7 @@ public class ProductController {
 
     @PostMapping(path = "/products/update")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String updateProductPost(@RequestParam Integer id,
+    protected String updateProduct(@RequestParam Integer id,
                                        @RequestParam String name,
                                        @RequestParam String description,
                                        @RequestParam Double price) {
@@ -90,7 +85,7 @@ public class ProductController {
 
     @PostMapping(path = "/products/search")
     @PreAuthorize("hasAuthority('product:read')")
-    protected String searchProductPost(@RequestParam String search,
+    protected String searchProduct(@RequestParam String search,
                                        ModelMap model) {
 
         List<Product> bySearch = productService.getBySearch(search);
@@ -102,7 +97,7 @@ public class ProductController {
 
     @PostMapping(path = "/products/delete")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String deleteProductPost(@RequestParam Integer id) {
+    protected String deleteProduct(@RequestParam Integer id) {
 
         productService.remove(id);
         return "redirect:/products";

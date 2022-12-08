@@ -3,7 +3,7 @@ package com.obolonyk.shopboot.web.controller;
 import com.obolonyk.shopboot.entity.Order;
 
 import com.obolonyk.shopboot.service.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,13 +15,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 @SessionAttributes("cart")
+@RequiredArgsConstructor
 public class CartController {
-    private final CartService cartService;
 
-    @Autowired
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
+    private final CartService cartService;
 
     @ModelAttribute("cart")
     public List<Order> cart() {
@@ -30,7 +27,7 @@ public class CartController {
 
     @PostMapping(path = "/product/cart")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String addToCartPost(@RequestParam Integer id,
+    protected String addToCart(@RequestParam Integer id,
                                    @ModelAttribute("cart") List<Order> cart,
                                    RedirectAttributes attributes) {
 
@@ -41,7 +38,7 @@ public class CartController {
 
     @GetMapping(path = "/products/cart")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String getCartGet(ModelMap model, @ModelAttribute("cart") List<Order> cart) {
+    protected String getCart(ModelMap model, @ModelAttribute("cart") List<Order> cart) {
 
         double totalPrice = cartService.getTotalProductsPrice(cart);
         model.addAttribute("orders", cart);
@@ -51,7 +48,7 @@ public class CartController {
 
     @PostMapping(path = "/products/cart/delete")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String deleteFromCartPost(@RequestParam Integer id,
+    protected String deleteFromCart(@RequestParam Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {
 
@@ -62,7 +59,7 @@ public class CartController {
 
     @PostMapping(path = "/products/cart/update/minus")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String updateCartMinusPost(@RequestParam Integer id,
+    protected String updateCartMinus(@RequestParam Integer id,
                                          @ModelAttribute("cart") List<Order> cart,
                                          RedirectAttributes attributes) {
 
@@ -73,7 +70,7 @@ public class CartController {
 
     @PostMapping(path = "/products/cart/update/plus")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String updateCartPlusPost(@RequestParam Integer id,
+    protected String updateCartPlus(@RequestParam Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {
 

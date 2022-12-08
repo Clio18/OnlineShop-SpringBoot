@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 @Table(name = "usersauth")
 public class User {
     @Id
@@ -21,7 +20,7 @@ public class User {
 
     @Column
     private String name;
-    @Column
+    @Column(name = "last_name")
     private String lastName;
     @Column
     private String login;
@@ -33,5 +32,5 @@ public class User {
     private String salt;
     @Column
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.USER;
 }
