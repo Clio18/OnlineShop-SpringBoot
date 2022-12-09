@@ -5,47 +5,38 @@ import com.obolonyk.shopboot.entity.Product;
 import com.obolonyk.shopboot.service.CartService;
 import com.obolonyk.shopboot.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/api/v1/products", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 
     private final ProductService productService;
     private final CartService cartService;
 
-    @GetMapping(path = "/products")
+    @GetMapping()
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String getAllProducts(Model model,
+    protected @ResponseBody List<Product> getAllProducts(Model model,
                                  //ArrayList has a constructor
                                  @ModelAttribute("cart") ArrayList<Order> cart) {
 
-        int count = cartService.getTotalProductsCount(cart);
-        model.addAttribute("count", count);
-
-        List<Product> products = productService.getAll();
-        model.addAttribute("products", products);
-        return "products";
+        return productService.getAll();
     }
 
-    @GetMapping(path = "/products/add")
+    @PostMapping()
     @PreAuthorize("hasAuthority('product:write')")
-    protected String addProductView() {
-        return "addProduct";
-    }
-
-    @PostMapping(path = "/products/add")
-    @PreAuthorize("hasAuthority('product:write')")
-    protected String addProduct(@RequestParam String name,
-                                    @RequestParam String description,
-                                    @RequestParam Double price) {
+    protected ResponseEntity<Product> addProduct(@RequestParam String name,
+                                                 @RequestParam String description,
+                                                 @RequestParam Double price) {
 
         Product product = Product.builder()
                 .name(name)
@@ -53,22 +44,12 @@ public class ProductController {
                 .description(description)
                 .build();
         productService.save(product);
-        return "redirect:/products";
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/products/update")
+    @PutMapping("{id}")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String updateProductView(@RequestParam Integer id,
-                                      ModelMap model) {
-
-        Product product = productService.getById(id);
-        model.addAttribute("product", product);
-        return "updateProduct";
-    }
-
-    @PostMapping(path = "/products/update")
-    @PreAuthorize("hasAuthority('product:write')")
-    protected String updateProduct(@RequestParam Integer id,
+    protected ResponseEntity<Product> updateProduct(@PathVariable Integer id,
                                        @RequestParam String name,
                                        @RequestParam String description,
                                        @RequestParam Double price) {
@@ -80,26 +61,21 @@ public class ProductController {
                 .name(name)
                 .build();
         productService.save(product);
-        return "redirect:/products";
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/products/search")
+    @PostMapping("{search}")
     @PreAuthorize("hasAuthority('product:read')")
-    protected String searchProduct(@RequestParam String search,
-                                       ModelMap model) {
+    protected List<Product> searchProduct(@PathVariable String search) {
 
-        List<Product> bySearch = productService.getBySearch(search);
-
-        model.addAttribute("count", 0);
-        model.addAttribute("products", bySearch);
-        return "products";
+        return productService.getBySearch(search);
     }
 
-    @PostMapping(path = "/products/delete")
+    @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('product:write')")
-    protected String deleteProduct(@RequestParam Integer id) {
+    protected ResponseEntity<Product> deleteProduct(@PathVariable Integer id) {
 
         productService.remove(id);
-        return "redirect:/products";
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

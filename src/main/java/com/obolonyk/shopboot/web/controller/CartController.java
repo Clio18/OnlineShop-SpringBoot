@@ -4,18 +4,18 @@ import com.obolonyk.shopboot.entity.Order;
 
 import com.obolonyk.shopboot.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Controller
+@RestController
 @SessionAttributes("cart")
 @RequiredArgsConstructor
+@RequestMapping(value = "/api/v1/cart", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CartController {
 
     private final CartService cartService;
@@ -25,57 +25,50 @@ public class CartController {
         return new CopyOnWriteArrayList<>();
     }
 
-    @PostMapping(path = "/product/cart")
+    @PostMapping("{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String addToCart(@RequestParam Integer id,
+    protected void addToCart(@PathVariable Integer id,
                                    @ModelAttribute("cart") List<Order> cart,
                                    RedirectAttributes attributes) {
 
         List<Order> cartUpdated = cartService.addChosenProductToCart(id, cart);
         attributes.addFlashAttribute("cart", cartUpdated);
-        return "redirect:/products";
     }
 
-    @GetMapping(path = "/products/cart")
+    @GetMapping()
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String getCart(ModelMap model, @ModelAttribute("cart") List<Order> cart) {
+    protected List<Order> getCart(@ModelAttribute("cart") List<Order> cart) {
 
-        double totalPrice = cartService.getTotalProductsPrice(cart);
-        model.addAttribute("orders", cart);
-        model.addAttribute("totalPrice", totalPrice);
-        return "cart";
+        return cart;
     }
 
-    @PostMapping(path = "/products/cart/delete")
+    @DeleteMapping("{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String deleteFromCart(@RequestParam Integer id,
+    protected void deleteFromCart(@PathVariable Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {
 
         cartService.deleteChosenProductFromCart(cart, id);
         attributes.addFlashAttribute("cart", cart);
-        return "redirect:/products/cart";
     }
 
-    @PostMapping(path = "/products/cart/update/minus")
+    @PostMapping(path = "minus/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String updateCartMinus(@RequestParam Integer id,
+    protected void updateCartMinus(@PathVariable Integer id,
                                          @ModelAttribute("cart") List<Order> cart,
                                          RedirectAttributes attributes) {
 
         cartService.decreasingByOneCart(cart, id);
         attributes.addFlashAttribute("cart", cart);
-        return "redirect:/products/cart";
     }
 
-    @PostMapping(path = "/products/cart/update/plus")
+    @PostMapping(path = "plus/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected String updateCartPlus(@RequestParam Integer id,
+    protected void updateCartPlus(@PathVariable Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {
 
         cartService.increasingByOneInCart(cart, id);
         attributes.addFlashAttribute("cart", cart);
-        return "redirect:/products/cart";
     }
 }

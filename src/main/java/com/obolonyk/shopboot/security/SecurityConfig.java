@@ -1,7 +1,8 @@
 package com.obolonyk.shopboot.security;
 
-import com.obolonyk.shopboot.auth.ApplicationUserService;
+import com.obolonyk.shopboot.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,34 +23,31 @@ import java.util.concurrent.TimeUnit;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource("classpath:/application.properties")
 @RequiredArgsConstructor
-public class ApplicationSecurityConfig {
+public class SecurityConfig {
 
     @Value("${security.secret}")
     private String secret;
-    
+
     @Value("${security.session.days-to-live}")
     private int days;
 
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final ApplicationUserService applicationUserService;
-
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*", "/products/*", "/product/*", "/registration").permitAll()
-                .antMatchers("/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers("/", "index", "/css/*", "/js/*", "/login", "/registration").permitAll()
+                .antMatchers("/api/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .permitAll()
-                .defaultSuccessUrl("/products", true)
-                .passwordParameter("password")
-                .usernameParameter("login")
+
+                .defaultSuccessUrl("/api/v1/products", true)
                 .and()
                 .rememberMe()
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(days))
@@ -57,6 +55,7 @@ public class ApplicationSecurityConfig {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .deleteCookies("JSESSIONID")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
@@ -70,7 +69,7 @@ public class ApplicationSecurityConfig {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(applicationUserService);
+        provider.setUserDetailsService(userService);
         return provider;
     }
 

@@ -6,19 +6,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.obolonyk.shopboot.security.ApplicationUserPermission.*;
+import static com.obolonyk.shopboot.security.UserPermission.*;
 
-public enum ApplicationUserRole {
+public enum UserRole {
     ADMIN(Sets.newHashSet(PRODUCT_READ, PRODUCT_WRITE)),
     USER(Sets.newHashSet(PRODUCT_READ));
 
-    private final Set<ApplicationUserPermission> permissions;
+    private final Set<UserPermission> permissions;
 
-    ApplicationUserRole(Set<ApplicationUserPermission> permissions) {
+    UserRole(Set<UserPermission> permissions) {
         this.permissions = permissions;
     }
 
-    public Set<ApplicationUserPermission> getPermissions() {
+    public Set<UserPermission> getPermissions() {
         return permissions;
     }
 

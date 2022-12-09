@@ -1,12 +1,12 @@
 package com.obolonyk.shopboot.security;
 
-public enum ApplicationUserPermission {
+public enum UserPermission {
     PRODUCT_READ("product:read"),
     PRODUCT_WRITE("product:write");
 
     private final String permission;
 
-    ApplicationUserPermission(String permission) {
+    UserPermission(String permission) {
         this.permission = permission;
     }
 

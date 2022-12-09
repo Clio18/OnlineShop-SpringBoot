@@ -1,41 +1,24 @@
 package com.obolonyk.shopboot.web.controller;
-
 import com.obolonyk.shopboot.entity.User;
 import com.obolonyk.shopboot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/")
+@RestController
+@RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserRepository repository;
 
-    @GetMapping("login")
-    public String getLogin() {
-        return "login";
-    }
-
-    @PostMapping("logout")
-    public String getLogout() {
-        return "redirect:/login";
-    }
-
-    @GetMapping("registration")
-    public String getRegistered() {
-        return "registration";
-    }
-
-    @PostMapping(path = "/registration")
-    protected String register(@ModelAttribute User user) {
+    @PutMapping("/registration")
+    protected ResponseEntity<User> register(@ModelAttribute User user) {
         try {
             repository.save(user);
-            return "login";
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }catch (Exception e){
             throw new RuntimeException("Exception occurs during registration");
         }
