@@ -41,21 +41,21 @@ class ProductControllerTest {
     @Test
     @WithUserDetails("admin")
     void testGetListOfProducts() throws Exception {
-        Product productSamsung = Product.builder()
+        Product product1 = Product.builder()
                 .id(1)
                 .name("Antman")
                 .description("Antman is a superhero, based on the Marvel Comics superhero of the same name")
                 .price(100.0)
                 .creationDate(LocalDateTime.of(2022, 2,24, 4, 0, 0))
                 .build();
-        Product productXiaomi = Product.builder()
+        Product product2 = Product.builder()
                 .id(2)
                 .name("Batman")
                 .description("Help Batman stop crime and save civilians with Batman toys")
                 .price(200.0)
                 .creationDate(LocalDateTime.of(2022, 2,24, 4, 0, 0))
                 .build();
-        Product productApple = Product.builder()
+        Product product3 = Product.builder()
                 .id(3)
                 .name("Sega")
                 .description("A Japanese video game developer and publisher and manufacturer of arcade games and formerly of video game consoles.")
@@ -63,7 +63,7 @@ class ProductControllerTest {
                 .creationDate(LocalDateTime.of(2022, 2,24, 4, 0, 0))
                 .build();
 
-        List<Product> productsList = List.of(productSamsung, productXiaomi, productApple);
+        List<Product> productsList = List.of(product1, product2, product3);
 
         when(productService.getAll()).thenReturn(productsList);
         mockMvc.perform( MockMvcRequestBuilders

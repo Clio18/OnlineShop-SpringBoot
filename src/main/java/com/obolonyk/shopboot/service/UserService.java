@@ -21,6 +21,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void save(User user) {
+        String password = user.getPassword();
+        String encode = passwordEncoder.encode(password);
+        user.setPassword(encode);
         repository.save(user);
     }
 

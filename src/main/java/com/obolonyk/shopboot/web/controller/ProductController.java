@@ -1,18 +1,15 @@
 package com.obolonyk.shopboot.web.controller;
 
-import com.obolonyk.shopboot.entity.Order;
 import com.obolonyk.shopboot.entity.Product;
-import com.obolonyk.shopboot.service.CartService;
 import com.obolonyk.shopboot.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -21,28 +18,20 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final CartService cartService;
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    protected @ResponseBody List<Product> getAllProducts(Model model,
-                                 //ArrayList has a constructor
-                                 @ModelAttribute("cart") ArrayList<Order> cart) {
+    protected @ResponseBody
+    List<Product> getAllProducts() {
 
         return productService.getAll();
     }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('product:write')")
-    protected ResponseEntity<Product> addProduct(@RequestParam String name,
-                                                 @RequestParam String description,
-                                                 @RequestParam Double price) {
+    protected ResponseEntity<Product> addProduct(@RequestBody Product product) {
 
-        Product product = Product.builder()
-                .name(name)
-                .price(price)
-                .description(description)
-                .build();
+        product.setCreationDate(LocalDateTime.now());
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
@@ -50,16 +39,10 @@ public class ProductController {
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('product:write')")
     protected ResponseEntity<Product> updateProduct(@PathVariable Integer id,
-                                       @RequestParam String name,
-                                       @RequestParam String description,
-                                       @RequestParam Double price) {
+                                                    @RequestBody Product product) {
 
-        Product product = Product.builder()
-                .id(id)
-                .price(price)
-                .description(description)
-                .name(name)
-                .build();
+        product.setId(id);
+        product.setCreationDate(LocalDateTime.now());
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
