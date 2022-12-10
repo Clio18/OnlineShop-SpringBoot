@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "usersauth")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
@@ -37,7 +37,7 @@ public class User implements UserDetails {
     private String salt;
     @Column
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private UserRole role;
 
     @Transient
     private Set<? extends GrantedAuthority> grantedAuthorities;

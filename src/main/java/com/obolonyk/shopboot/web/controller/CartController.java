@@ -1,6 +1,6 @@
 package com.obolonyk.shopboot.web.controller;
 
-import com.obolonyk.shopboot.entity.Order;
+import com.obolonyk.shopboot.dto.Order;
 
 import com.obolonyk.shopboot.service.CartService;
 import lombok.RequiredArgsConstructor;

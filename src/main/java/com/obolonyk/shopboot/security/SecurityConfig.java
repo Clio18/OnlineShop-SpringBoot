@@ -46,7 +46,6 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-
                 .defaultSuccessUrl("/api/v1/products", true)
                 .and()
                 .rememberMe()
@@ -55,7 +54,7 @@ public class SecurityConfig {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("JSESSIONID", "remember-me")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)

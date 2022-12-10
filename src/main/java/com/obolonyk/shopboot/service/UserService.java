@@ -2,6 +2,7 @@ package com.obolonyk.shopboot.service;
 
 import com.obolonyk.shopboot.entity.User;
 import com.obolonyk.shopboot.repository.UserRepository;
+import com.obolonyk.shopboot.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,6 +25,8 @@ public class UserService implements UserDetailsService {
         String password = user.getPassword();
         String encode = passwordEncoder.encode(password);
         user.setPassword(encode);
+        //user by default
+        user.setRole(UserRole.USER);
         repository.save(user);
     }
 

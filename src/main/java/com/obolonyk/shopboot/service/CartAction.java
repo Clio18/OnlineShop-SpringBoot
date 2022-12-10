@@ -1,6 +1,6 @@
 package com.obolonyk.shopboot.service;
 
-import com.obolonyk.shopboot.entity.Order;
+import com.obolonyk.shopboot.dto.Order;
 
 import java.util.Arrays;
 import java.util.List;

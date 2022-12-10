@@ -1,5 +1,6 @@
-package com.obolonyk.shopboot.entity;
+package com.obolonyk.shopboot.dto;
 
+import com.obolonyk.shopboot.entity.Product;
 import lombok.Builder;
 import lombok.Data;
 

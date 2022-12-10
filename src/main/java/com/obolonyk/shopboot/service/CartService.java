@@ -1,6 +1,6 @@
 package com.obolonyk.shopboot.service;
 
-import com.obolonyk.shopboot.entity.Order;
+import com.obolonyk.shopboot.dto.Order;
 import com.obolonyk.shopboot.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

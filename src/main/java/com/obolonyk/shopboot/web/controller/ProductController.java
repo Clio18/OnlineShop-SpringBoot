@@ -1,7 +1,9 @@
 package com.obolonyk.shopboot.web.controller;
 
+import com.obolonyk.shopboot.dto.ProductDTO;
 import com.obolonyk.shopboot.entity.Product;
 import com.obolonyk.shopboot.service.ProductService;
+import com.obolonyk.shopboot.util.PojoDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,9 +30,9 @@ public class ProductController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('product:write')")
-    protected ResponseEntity<Product> addProduct(@RequestBody Product product) {
+    protected ResponseEntity<Product> addProduct(@RequestBody ProductDTO productDTO) {
 
-        product.setCreationDate(LocalDateTime.now());
+        Product product = PojoDtoConverter.getProductFromProductDTO(productDTO);
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
@@ -39,10 +40,10 @@ public class ProductController {
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('product:write')")
     protected ResponseEntity<Product> updateProduct(@PathVariable Integer id,
-                                                    @RequestBody Product product) {
+                                                    @RequestBody ProductDTO productDTO) {
 
+        Product product = PojoDtoConverter.getProductFromProductDTO(productDTO);
         product.setId(id);
-        product.setCreationDate(LocalDateTime.now());
         productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
