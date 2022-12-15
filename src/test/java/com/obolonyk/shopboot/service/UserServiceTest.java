@@ -2,6 +2,7 @@ package com.obolonyk.shopboot.service;
 
 import com.obolonyk.shopboot.entity.User;
 import com.obolonyk.shopboot.repository.UserRepository;
+import com.obolonyk.shopboot.security.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,6 +78,15 @@ class UserServiceTest {
         userService.save(user);
         verify(passwordEncoder).encode(password);
         verify(repository).save(user);
+    }
+
+    @Test
+    void testSave_CheckSetRoleAndEncodedPassword(){
+        when(passwordEncoder.encode(password)).thenReturn("xxxx");
+        when(repository.save(user)).thenReturn(user);
+        User savedUser = userService.save(user);
+        assertEquals(UserRole.USER, savedUser.getRole());
+        assertNotEquals("password", savedUser.getPassword());
     }
 
 }

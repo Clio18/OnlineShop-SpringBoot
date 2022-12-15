@@ -21,13 +21,14 @@ public class UserService implements UserDetailsService {
         return repository.findByLogin(login).orElseThrow(() -> new RuntimeException(String.format("User with login %s not found", login)));
     }
 
-    public void save(User user) {
+    public User save(User user) {
         String password = user.getPassword();
         String encode = passwordEncoder.encode(password);
         user.setPassword(encode);
         //user by default
         user.setRole(UserRole.USER);
         repository.save(user);
+        return user;
     }
 
     @Override

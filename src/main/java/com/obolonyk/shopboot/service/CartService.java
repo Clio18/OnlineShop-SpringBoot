@@ -2,19 +2,16 @@ package com.obolonyk.shopboot.service;
 
 import com.obolonyk.shopboot.dto.Order;
 import com.obolonyk.shopboot.entity.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CartService {
-    private final ProductService productService;
 
-    @Autowired
-    public CartService(ProductService productService) {
-        this.productService = productService;
-    }
+    private final ProductService productService;
 
     public int getTotalProductsCount(List<Order> cart) {
         int count = 0;
