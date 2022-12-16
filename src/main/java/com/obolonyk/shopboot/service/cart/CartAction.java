@@ -1,6 +1,4 @@
-package com.obolonyk.shopboot.service;
-
-import com.obolonyk.shopboot.dto.Order;
+package com.obolonyk.shopboot.service.cart;
 
 import java.util.Arrays;
 import java.util.List;

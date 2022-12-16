@@ -1,6 +1,6 @@
 package com.obolonyk.shopboot.entity;
 
-import com.obolonyk.shopboot.security.UserRole;
+import com.obolonyk.shopboot.security.model.UserRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,7 +52,8 @@ public class User implements UserDetails {
     private boolean isCredentialsNonExpired;
 
     @Transient
-    private boolean isEnabled;
+    @Builder.Default
+    private boolean isEnabled = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

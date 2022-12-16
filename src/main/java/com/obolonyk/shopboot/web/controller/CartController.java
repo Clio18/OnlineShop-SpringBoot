@@ -1,11 +1,10 @@
 package com.obolonyk.shopboot.web.controller;
 
-import com.obolonyk.shopboot.dto.Order;
+import com.obolonyk.shopboot.service.cart.Order;
 
-import com.obolonyk.shopboot.service.CartService;
+import com.obolonyk.shopboot.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,7 +25,7 @@ public class CartController {
     }
 
     @PostMapping("{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     protected void addToCart(@PathVariable Integer id,
                                    @ModelAttribute("cart") List<Order> cart,
                                    RedirectAttributes attributes) {
@@ -36,14 +35,14 @@ public class CartController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     protected List<Order> getCart(@ModelAttribute("cart") List<Order> cart) {
 
         return cart;
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     protected void deleteFromCart(@PathVariable Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {
@@ -53,7 +52,7 @@ public class CartController {
     }
 
     @PostMapping(path = "minus/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     protected void updateCartMinus(@PathVariable Integer id,
                                          @ModelAttribute("cart") List<Order> cart,
                                          RedirectAttributes attributes) {
@@ -63,7 +62,7 @@ public class CartController {
     }
 
     @PostMapping(path = "plus/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     protected void updateCartPlus(@PathVariable Integer id,
                                         @ModelAttribute("cart") List<Order> cart,
                                         RedirectAttributes attributes) {

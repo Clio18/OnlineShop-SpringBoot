@@ -1,4 +1,4 @@
-package com.obolonyk.shopboot.dto;
+package com.obolonyk.shopboot.service.cart;
 
 import com.obolonyk.shopboot.entity.Product;
 import lombok.Builder;

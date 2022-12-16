@@ -1,4 +1,4 @@
-package com.obolonyk.shopboot.security;
+package com.obolonyk.shopboot.security.model;
 
 public enum UserPermission {
     PRODUCT_READ("product:read"),

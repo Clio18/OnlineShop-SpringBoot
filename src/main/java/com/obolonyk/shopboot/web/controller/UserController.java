@@ -1,10 +1,11 @@
 package com.obolonyk.shopboot.web.controller;
 
 import com.obolonyk.shopboot.dto.UserDTO;
+import com.obolonyk.shopboot.dto.mapper.EntityMapper;
 import com.obolonyk.shopboot.entity.User;
 import com.obolonyk.shopboot.service.UserService;
-import com.obolonyk.shopboot.util.PojoDtoConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,12 @@ public class UserController {
 
     private final UserService userService;
 
+    @Autowired
+    private EntityMapper mapper;
+
     @PostMapping()
     protected ResponseEntity<User> register(@ModelAttribute UserDTO userDTO) {
-        User user = PojoDtoConverter.getUserFromUserDTO(userDTO);
+        User user = mapper.dtoToEntity(userDTO);
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

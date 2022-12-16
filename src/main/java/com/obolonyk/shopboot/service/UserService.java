@@ -2,24 +2,21 @@ package com.obolonyk.shopboot.service;
 
 import com.obolonyk.shopboot.entity.User;
 import com.obolonyk.shopboot.repository.UserRepository;
-import com.obolonyk.shopboot.security.UserRole;
+import com.obolonyk.shopboot.security.model.UserRole;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public User getByLogin(String login) {
-        return repository.findByLogin(login).orElseThrow(() -> new RuntimeException(String.format("User with login %s not found", login)));
-    }
 
     public User save(User user) {
         String password = user.getPassword();
@@ -31,9 +28,15 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return getByLogin(userName);
+    public User getByLogin(String login) {
+        return repository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException(String.format("User with login %s not found", login)));
     }
 
+    public User getByEmail(String email) {
+        return repository.findByLogin(email).orElseThrow(() -> new EntityNotFoundException(String.format("User with email %s not found", email)));
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return repository.findByLogin(email);
+    }
 }

@@ -1,4 +1,4 @@
-package com.obolonyk.shopboot.security;
+package com.obolonyk.shopboot.security.model;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.obolonyk.shopboot.security.UserPermission.*;
+import static com.obolonyk.shopboot.security.model.UserPermission.*;
 
 public enum UserRole {
     ADMIN(Sets.newHashSet(PRODUCT_READ, PRODUCT_WRITE)),

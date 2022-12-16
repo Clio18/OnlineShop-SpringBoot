@@ -1,7 +1,7 @@
-package com.obolonyk.shopboot.service;
+package com.obolonyk.shopboot.service.cart;
 
-import com.obolonyk.shopboot.dto.Order;
 import com.obolonyk.shopboot.entity.Product;
+import com.obolonyk.shopboot.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

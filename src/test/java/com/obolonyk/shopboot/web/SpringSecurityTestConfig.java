@@ -1,7 +1,7 @@
 package com.obolonyk.shopboot.web;
 
 import com.obolonyk.shopboot.entity.User;
-import com.obolonyk.shopboot.security.UserRole;
+import com.obolonyk.shopboot.security.model.UserRole;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;

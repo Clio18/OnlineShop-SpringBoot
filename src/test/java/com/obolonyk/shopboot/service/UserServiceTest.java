@@ -2,13 +2,12 @@ package com.obolonyk.shopboot.service;
 
 import com.obolonyk.shopboot.entity.User;
 import com.obolonyk.shopboot.repository.UserRepository;
-import com.obolonyk.shopboot.security.UserRole;
+import com.obolonyk.shopboot.security.model.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -59,16 +58,6 @@ class UserServiceTest {
         });
 
         assertEquals(String.format("User with login %s not found", login), exception.getMessage());
-    }
-
-    @Test
-    void testLoadUserByUsername_CheckIfNotNull_CheckFieldsValuesSimilar() {
-        when(repository.findByLogin(login)).thenReturn(Optional.of(user));
-
-        UserDetails userDetails = userService.loadUserByUsername(login);
-        assertNotNull(userDetails);
-        assertEquals(login, userDetails.getUsername());
-        assertEquals(password, userDetails.getPassword());
     }
 
     @Test
