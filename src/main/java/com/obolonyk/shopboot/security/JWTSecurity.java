@@ -65,6 +65,7 @@ public class JWTSecurity {
                                 .addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUserDetailsService, secret))
                                 .exceptionHandling()
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+
                     } catch (Exception e) {
                         throw new RuntimeException();
                     }
