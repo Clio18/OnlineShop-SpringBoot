@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -64,13 +63,16 @@ public class JWTSecurity {
                                 .addFilter(authenticationFilter())
                                 .addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUserDetailsService, secret))
                                 .exceptionHandling()
-                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+                                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+
+                                .and()
+                                .formLogin()
+                                .loginPage("/login");
 
                     } catch (Exception e) {
                         throw new RuntimeException();
                     }
-                })
-                .httpBasic(Customizer.withDefaults());
+                });
 
         return http.build();
     }
