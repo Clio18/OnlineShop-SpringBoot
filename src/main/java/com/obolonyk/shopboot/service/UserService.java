@@ -17,7 +17,6 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-
     public User save(User user) {
         String password = user.getPassword();
         String encode = passwordEncoder.encode(password);

@@ -3,6 +3,7 @@ package com.obolonyk.shopboot.service;
 import com.obolonyk.shopboot.entity.Product;
 import com.obolonyk.shopboot.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -49,7 +50,8 @@ class ProductServiceTest {
     }
 
     @Test
-    void testGetAll() {
+    @DisplayName("test getAll and check result is not null, size, content equality, calling the repo's method")
+    void testGetAll_AndCheckResultNotNull_Size_Content_CallingTheRepoMethod() {
         when(productRepositoryMock.findAll()).thenReturn(products);
         List<Product> actualProducts = productService.getAll();
         assertNotNull(actualProducts);
@@ -60,7 +62,8 @@ class ProductServiceTest {
     }
 
     @Test
-    void testFindById() {
+    @DisplayName("test findById and check content equality and calling the repo's method")
+    void testFindById_AndCheckContent_CallingTheRepoMethod() {
         when(productRepositoryMock.findById(1)).thenReturn(Optional.ofNullable(products.get(0)));
         Product actualProduct = productService.getById(1);
         assertEquals(product1, actualProduct);
@@ -68,7 +71,8 @@ class ProductServiceTest {
     }
 
     @Test
-    void testAdd() {
+    @DisplayName("test add and check calling the repo's method")
+    void testAdd_AndCallingTheRepoMethod() {
         Product product3 = Product.builder()
                 .id(3)
                 .name("Yoyo")
@@ -77,14 +81,15 @@ class ProductServiceTest {
                 .creationDate(LocalDateTime.of(2022, 2, 24, 4, 0, 0))
                 .build();
 
-        //interface repository'' method save not void!
+        //interface repository's method save not void!
         //doNothing().when(productRepositoryMock).save(product3);
         productRepositoryMock.save(product3);
         verify(productRepositoryMock).save(product3);
     }
 
     @Test
-    void testRemove() {
+    @DisplayName("test delete and check calling the repo's method")
+    void testDelete_AndCallingTheRepoMethod() {
         doNothing().when(productRepositoryMock).deleteById(isA(Integer.class));
         productRepositoryMock.deleteById(1);
         verify(productRepositoryMock, times(1)).deleteById(1);

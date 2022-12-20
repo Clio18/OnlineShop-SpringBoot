@@ -15,8 +15,6 @@
 
 	<properties>
 		<java.version>19</java.version>
-		<maven.compiler.source>19</maven.compiler.source>
-		<maven.compiler.target>19</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -65,13 +63,6 @@
 			<version>28.1-jre</version>
 		</dependency>
 
-		<!-- ENCRYPTION -->
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.15</version>
-		</dependency>
-
 		<!-- JWT creation -->
 		<dependency>
 			<groupId>com.auth0</groupId>
@@ -107,9 +98,7 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.4.2.Final</version>
 		</dependency>
-
 	</dependencies>
-
 
 	<build>
 		<plugins>

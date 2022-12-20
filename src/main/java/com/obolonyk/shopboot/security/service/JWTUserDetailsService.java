@@ -23,7 +23,6 @@ public class JWTUserDetailsService implements UserDetailsService {
                 .login(user.getLogin())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .lastName(user.getLastName())
                 .role(user.getRole())
                 .name(user.getName())
                 .isAccountNonExpired(true)

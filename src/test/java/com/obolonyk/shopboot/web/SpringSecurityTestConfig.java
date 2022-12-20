@@ -19,7 +19,6 @@ public class SpringSecurityTestConfig {
     public UserDetailsService userDetailsService() {
         User admin = User.builder()
                 .name("admin")
-                .lastName("admin")
                 .email("admin@gmail.com")
                 .login("admin")
                 .password("password")
@@ -32,7 +31,6 @@ public class SpringSecurityTestConfig {
                 .build();
         User user = User.builder()
                 .name("user")
-                .lastName("user")
                 .email("user@gmail.com")
                 .login("user")
                 .password("password")
