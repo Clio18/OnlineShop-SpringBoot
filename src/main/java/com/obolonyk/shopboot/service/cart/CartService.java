@@ -34,7 +34,7 @@ public class CartService {
         return totalPrice;
     }
 
-    public List<Order> addChosenProductToCart(Integer productId, List<Order> cart) {
+    public List<Order> addChosenProductToCart(List<Order> cart, Integer productId) {
         Product product = productService.getById(productId);
 
         for (Order order : cart) {

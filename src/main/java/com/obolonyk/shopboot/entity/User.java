@@ -20,7 +20,7 @@ public class User implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_gen")
-    @SequenceGenerator(name = "users_id_gen", sequenceName = "users_id_seq")
+    @SequenceGenerator(name = "users_id_gen", sequenceName = "users_id_seq", allocationSize = 1)
     private Integer id;
 
     @Column

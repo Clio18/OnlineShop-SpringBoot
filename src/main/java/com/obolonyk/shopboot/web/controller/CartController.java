@@ -32,7 +32,7 @@ public class CartController {
                              @ModelAttribute("cart") List<Order> cart,
                              RedirectAttributes attributes) {
 
-        List<Order> cartUpdated = cartService.addChosenProductToCart(id, cart);
+        List<Order> cartUpdated = cartService.addChosenProductToCart(cart, id);
         attributes.addFlashAttribute("cart", cartUpdated);
     }
 

@@ -40,7 +40,7 @@ public class ProductController {
 
         Product product = mapper.dtoToEntity(productDTO);
         productService.save(product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return ResponseEntity.ok(product);
     }
 
     //URL: PUT http://localhost:8080/api/v1/products/...
@@ -52,7 +52,7 @@ public class ProductController {
         Product product = mapper.dtoToEntity(productDTO);
         product.setId(id);
         productService.save(product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return ResponseEntity.ok(product);
     }
 
     //URL: POST http://localhost:8080/api/v1/products/...
@@ -69,6 +69,6 @@ public class ProductController {
     protected ResponseEntity<Product> deleteProduct(@PathVariable Integer id) {
 
         productService.remove(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
