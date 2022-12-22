@@ -43,13 +43,13 @@ class CartControllerTest {
     private Order order;
 
     @BeforeEach
-    void init(){
+    void init() {
         Product product = Product.builder()
                 .id(1)
                 .name("Antman")
                 .description("Antman is a superhero, based on the Marvel Comics superhero of the same name")
                 .price(100.0)
-                .creationDate(LocalDateTime.of(2022, 2,24, 4, 0, 0))
+                .creationDate(LocalDateTime.of(2022, 2, 24, 4, 0, 0))
                 .build();
         order = Order.builder()
                 .product(product)
@@ -62,7 +62,7 @@ class CartControllerTest {
     @WithUserDetails("admin")
     @DisplayName("Test GetListOfProducts And Check Status Code")
     void testGetLCart_AndCheckStatus() throws Exception {
-        mockMvc.perform( MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/cart/")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -77,7 +77,7 @@ class CartControllerTest {
         updatedCart.add(order);
 
         when(cartService.addChosenProductToCart(cart, 1)).thenReturn(updatedCart);
-        mockMvc.perform( MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v1/cart?product_id=1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -93,7 +93,7 @@ class CartControllerTest {
 
         doNothing().when(cartService).deleteChosenProductFromCart(cart, 1);
 
-        mockMvc.perform( MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .delete("/api/v1/cart?product_id=1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -109,7 +109,7 @@ class CartControllerTest {
 
         doNothing().when(cartService).decreasingByOneCart(cart, 1);
 
-        mockMvc.perform( MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v1/cart/minus?product_id=1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -125,7 +125,7 @@ class CartControllerTest {
 
         doNothing().when(cartService).increasingByOneInCart(cart, 1);
 
-        mockMvc.perform( MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/v1/cart/plus?product_id=1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
