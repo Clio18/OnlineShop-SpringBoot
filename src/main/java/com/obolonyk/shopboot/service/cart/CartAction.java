@@ -1,6 +1,5 @@
 package com.obolonyk.shopboot.service.cart;
 
-import java.util.Arrays;
 import java.util.List;
 
 public enum CartAction {
@@ -43,20 +42,13 @@ public enum CartAction {
         }
     };
 
-    public static CartAction of(String action) {
-        return Arrays.stream(values())
-                .filter(value -> value.name().equalsIgnoreCase(action))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Invalid action type"));
-    }
-
     public abstract void perform(List<Order> cart, long id);
 
-   static Order findOrderInCartById(List<Order> cart, long id) {
-       return cart.stream()
-               .filter(order -> order.getProduct().getId()==id)
-               .findFirst()
-               .orElseThrow(()-> new RuntimeException("No order found by provided id " + id));
+    static Order findOrderInCartById(List<Order> cart, long id) {
+        return cart.stream()
+                .filter(order -> order.getProduct().getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No order found by provided id " + id));
     }
 
 }

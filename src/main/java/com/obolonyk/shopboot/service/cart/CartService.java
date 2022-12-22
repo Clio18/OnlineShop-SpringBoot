@@ -13,27 +13,6 @@ public class CartService {
 
     private final ProductService productService;
 
-    public int getTotalProductsCount(List<Order> cart) {
-        int count = 0;
-        if (cart != null) {
-            for (Order order : cart) {
-                count = count + order.getQuantity();
-            }
-        }
-        return count;
-    }
-
-    public double getTotalProductsPrice(List<Order> orders) {
-        double totalPrice = 0;
-        if (orders==null){
-            return totalPrice;
-        }
-        for (Order order : orders) {
-            totalPrice = totalPrice + (order.getQuantity() * order.getProduct().getPrice());
-        }
-        return totalPrice;
-    }
-
     public List<Order> addChosenProductToCart(List<Order> cart, Integer productId) {
         Product product = productService.getById(productId);
 
