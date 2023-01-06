@@ -3,14 +3,12 @@ package com.obolonyk.shopboot.service;
 import com.obolonyk.shopboot.entity.Product;
 import com.obolonyk.shopboot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@Repository
 @RequiredArgsConstructor
 public class ProductService {
 
